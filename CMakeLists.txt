@@ -61,7 +61,7 @@ project(ME751_Project)
 
 LIST(APPEND CMAKE_PREFIX_PATH "${CMAKE_INSTALL_PREFIX}/../Chrono/lib")
 find_package(Chrono
-             COMPONENTS Irrlicht Vehicle Python
+             COMPONENTS Irrlicht Vehicle Postprocess
              CONFIG)
 
 #--------------------------------------------------------------
@@ -126,7 +126,7 @@ add_executable(pendulum pendulum_test.cpp)
 # install tree (if using an installed version of Chrono).
 #--------------------------------------------------------------
 
-set_target_properties(myexe PROPERTIES
+set_target_properties(pendulum PROPERTIES
 	    COMPILE_FLAGS "${CHRONO_CXX_FLAGS} ${EXTRA_COMPILE_FLAGS}"
 	    COMPILE_DEFINITIONS "CHRONO_DATA_DIR=\"${CHRONO_DATA_DIR}\""
 	    LINK_FLAGS "${CHRONO_LINKER_FLAGS}")
@@ -135,7 +135,7 @@ set_target_properties(myexe PROPERTIES
 # Link to Chrono libraries and dependency libraries
 #--------------------------------------------------------------
 
-target_link_libraries(myexe ${CHRONO_LIBRARIES})
+target_link_libraries(pendulum ${CHRONO_LIBRARIES})
 
 #--------------------------------------------------------------
 # === 4 (OPTIONAL) ===
