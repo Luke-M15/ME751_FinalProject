@@ -16,7 +16,7 @@ cmake_minimum_required(VERSION 2.8)
 # Modify the project name if you want:
 #--------------------------------------------------------------
 
-project(ME751_Project)
+project(ME751_Final_Project)
 
 #--------------------------------------------------------------
 # === 2 ===
@@ -61,7 +61,7 @@ project(ME751_Project)
 
 LIST(APPEND CMAKE_PREFIX_PATH "${CMAKE_INSTALL_PREFIX}/../Chrono/lib")
 find_package(Chrono
-             COMPONENTS Irrlicht Vehicle Postprocess
+             COMPONENTS Irrlicht Vehicle Postprocess FSI
              CONFIG)
 
 #--------------------------------------------------------------
@@ -114,8 +114,15 @@ endif()
 # Add the executable from your project and specify all C++
 # files in your project.
 #--------------------------------------------------------------
-
+add_executable(helloWorld helloWorld.cpp)
 add_executable(pendulum pendulum_test.cpp)
+add_executable(rolling_tire rolling_tire.cpp)
+
+
+set(MY_EXES
+    helloWorld
+    pendulum
+    rolling_tire)
 
 #--------------------------------------------------------------
 # Set properties for your executable target
@@ -126,7 +133,7 @@ add_executable(pendulum pendulum_test.cpp)
 # install tree (if using an installed version of Chrono).
 #--------------------------------------------------------------
 
-set_target_properties(pendulum PROPERTIES
+set_target_properties(${MY_EXES} PROPERTIES
 	    COMPILE_FLAGS "${CHRONO_CXX_FLAGS} ${EXTRA_COMPILE_FLAGS}"
 	    COMPILE_DEFINITIONS "CHRONO_DATA_DIR=\"${CHRONO_DATA_DIR}\""
 	    LINK_FLAGS "${CHRONO_LINKER_FLAGS}")
@@ -134,9 +141,9 @@ set_target_properties(pendulum PROPERTIES
 #--------------------------------------------------------------
 # Link to Chrono libraries and dependency libraries
 #--------------------------------------------------------------
-
-target_link_libraries(pendulum ${CHRONO_LIBRARIES})
-
+foreach(X IN LISTS MY_EXES)
+    target_link_libraries(${X} ${CHRONO_LIBRARIES})
+endforeach()
 #--------------------------------------------------------------
 # === 4 (OPTIONAL) ===
 #

@@ -36,7 +36,7 @@ using namespace irr::gui;
 
 int main(int argc, char* argv[]) {
     // Set path to Chrono data directory
-    SetChronoDataPath('C:/Users/motts/Documents/Code/Chrono/source/data');
+    SetChronoDataPath("C:/Users/motts/Documents/Code/Chrono/source/data");
     
     // Create a Chrono physical system
     ChSystemNSC mphysicalSystem;
