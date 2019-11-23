@@ -114,9 +114,9 @@ endif()
 # Add the executable from your project and specify all C++
 # files in your project.
 #--------------------------------------------------------------
-add_executable(helloWorld helloWorld.cpp)
-add_executable(pendulum pendulum_test.cpp)
-add_executable(rolling_tire rolling_tire.cpp)
+add_executable(helloWorld helloWorld/helloWorld.cpp)
+add_executable(pendulum pendulum_test/pendulum_test.cpp)
+add_executable(rolling_tire rolling_tire/rolling_tire.cpp)
 
 
 set(MY_EXES
