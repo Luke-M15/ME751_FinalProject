@@ -12,6 +12,7 @@
 #include "chrono/geometry/ChTriangleMeshConnected.h"
 #include "chrono/physics/ChLoadContainer.h"
 #include "chrono/physics/ChSystemSMC.h"
+#include "chrono/physics/ChLinkMotorRotation.h"
 #include "chrono/physics/ChLinkMotorRotationSpeed.h"
 #include "chrono/solver/ChSolverMINRES.h"
 #include "chrono/utils/ChUtilsInputOutput.h"
@@ -27,7 +28,7 @@ using namespace chrono::irrlicht;
 
 using namespace irr;
 
-const std::string out_dir = "/Rolling_tire";
+const std::string out_dir = "Rolling_tire";
 
 int main(int argc, char* argv[]) {
 	GetLog() << "ME 751 Final Project Rolling Tire Simulation\n";
@@ -67,7 +68,7 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 	
-	utils::CSV_writer csv(" ");
+	utils::CSV_writer outFile(" ");
 
 	//
 	// CREATE A RIGID BODY WITH A MESH
@@ -94,13 +95,15 @@ int main(int argc, char* argv[]) {
 	std::shared_ptr<ChColorAsset> mcol(new ChColorAsset);
 	mcol->SetColor(ChColor(0.3f, 0.3f, 0.3f));
 	rigidTire->AddAsset(mcol);
-
+	
 	std::shared_ptr<ChLinkMotorRotationSpeed> myMotor(new ChLinkMotorRotationSpeed);
-	myMotor->Initialize(rigidTire, mtruss, ChFrame<>(ChVector<>(1,0,0)));
+	myMotor->Initialize(rigidTire, mtruss, ChFrame<>(tire_center, Q_from_AngAxis(CH_C_PI_2, VECT_Y)));
 	my_system.Add(myMotor);
 	// create speed function and use it to set the motor speed
-	auto mSpeed = std::make_shared<ChFunction_Const>(CH_C_PI / 4.0);
+	auto mSpeed = std::make_shared<ChFunction_Ramp>(0.0,CH_C_PI / 4.0);
+	auto mSpeed_const = std::make_shared<ChFunction_Const>(0.1);
 	myMotor->SetSpeedFunction(mSpeed);
+	myMotor->SetSpindleConstraint(ChLinkMotorRotation::SpindleConstraint::OLDHAM);
 
 	//
 	// THE DEFORMABLE TERRAIN
@@ -193,9 +196,17 @@ int main(int argc, char* argv[]) {
 
 	application.SetTimestep(0.002);
 
+	// add column headers for the output csv
+	double t_end = 2;
 	while (application.GetDevice()->run()) {
+		double time = my_system.GetChTime();
+
+		if (time >= t_end)
+			break;
+
 		vehicle::TerrainForce frc = mterrain.GetContactForce(rigidTire);
-		csv << my_system.GetChTime() << frc.force << frc.moment << frc.point << std::endl;
+
+		outFile << time << frc.force << frc.moment << frc.point << std::endl;
 	
 
 		application.BeginScene();
@@ -209,8 +220,7 @@ int main(int argc, char* argv[]) {
 		application.EndScene();
 	}
 
-	
-	csv.write_to_file(out_dir + "/output.dat");
+	outFile.write_to_file(out_dir + "/output.dat");
 	
 
 	return 0;
