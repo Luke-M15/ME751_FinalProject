@@ -197,6 +197,7 @@ int main(int argc, char* argv[]) {
 	application.SetTimestep(0.002);
 
 	// add column headers for the output csv
+	outFile << "Time X_force Y_force Z_force X_moment Y_moment Z_moment X_pnt Y_pnt Z_pnt motorTrq" << std::endl;
 	double t_end = 2;
 	while (application.GetDevice()->run()) {
 		double time = my_system.GetChTime();
@@ -205,8 +206,10 @@ int main(int argc, char* argv[]) {
 			break;
 
 		vehicle::TerrainForce frc = mterrain.GetContactForce(rigidTire);
+		double torq = myMotor->GetMotorTorque();
 
-		outFile << time << frc.force << frc.moment << frc.point << std::endl;
+
+		outFile << time << frc.force << frc.moment << frc.point << torq << std::endl;
 	
 
 		application.BeginScene();
