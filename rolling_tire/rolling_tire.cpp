@@ -2,10 +2,10 @@
 //Author: Luke Mottley
 //ME 751 Final Project 
 //
-//Tire rolling on deformable soil (SCM), based significantly on demo_VEH_DeformableSoil
-// - measure draw bar pull
-// - longitudinal tire slip
-//
+//Rigid tire rolling on deformable soil (SCM), based significantly on demo_VEH_DeformableSoil.
+//Rotational speed applied with the rotational motor. Record and plot
+//  - terrain forces 
+//	- motor torque 
 //===================================================================
 
 
@@ -20,6 +20,7 @@
 #include "chrono_irrlicht/ChIrrApp.h"
 #include "chrono_vehicle/ChVehicleModelData.h"
 #include "chrono_vehicle/terrain/SCMDeformableTerrain.h"
+#include "chrono_postprocess/ChGnuPlot.h"
 
 #include "chrono_thirdparty/filesystem/path.h"
 
@@ -207,7 +208,6 @@ int main(int argc, char* argv[]) {
 
 		vehicle::TerrainForce frc = mterrain.GetContactForce(rigidTire);
 		double torq = myMotor->GetMotorTorque();
-
 
 		outFile << time << frc.force << frc.moment << frc.point << torq << std::endl;
 	
