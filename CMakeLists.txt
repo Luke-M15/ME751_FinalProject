@@ -117,12 +117,14 @@ endif()
 add_executable(helloWorld helloWorld/helloWorld.cpp)
 add_executable(pendulum pendulum_test/pendulum_test.cpp)
 add_executable(rolling_tire rolling_tire/rolling_tire.cpp)
+add_executable(hmmwv_turning hmmwv_turning/hmmwv_turning.cpp)
 
 
 set(MY_EXES
     helloWorld
     pendulum
-    rolling_tire)
+    rolling_tire
+    hmmwv_turning)
 
 #--------------------------------------------------------------
 # Set properties for your executable target
