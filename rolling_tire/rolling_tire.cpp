@@ -176,29 +176,10 @@ int main(int argc, char* argv[]) {
 	// ==IMPORTANT!== Mark completion of system construction
 	my_system.SetupInitial();
 
-	//
-	// THE SOFT-REAL-TIME CYCLE
-	//
-	/*
-		// Change the timestepper to HHT:
-		my_system.SetTimestepperType(ChTimestepper::Type::HHT);
-		auto integrator = std::static_pointer_cast<ChTimestepperHHT>(my_system.GetTimestepper());
-		integrator->SetAlpha(-0.2);
-		integrator->SetMaxiters(8);
-		integrator->SetAbsTolerances(1e-05, 1.8e00);
-		integrator->SetMode(ChTimestepperHHT::POSITION);
-		integrator->SetModifiedNewton(true);
-		integrator->SetScaling(true);
-		integrator->SetVerbose(true);
-	*/
-	/*
-		my_system.SetTimestepperType(ChTimestepper::Type::EULER_IMPLICIT);
-	*/
-
 	application.SetTimestep(0.002);
 
 	// add column headers for the output csv
-	outFile << "Time X_force Y_force Z_force X_moment Y_moment Z_moment X_pnt Y_pnt Z_pnt motorTrq" << std::endl;
+	//outFile << "Time X_force Y_force Z_force X_moment Y_moment Z_moment X_pnt Y_pnt Z_pnt motorTrq" << std::endl;
 	double t_end = 2;
 	while (application.GetDevice()->run()) {
 		double time = my_system.GetChTime();
@@ -224,6 +205,29 @@ int main(int argc, char* argv[]) {
 	}
 
 	outFile.write_to_file(out_dir + "/output.dat");
+	// creating plots
+	std::string plot1 = out_dir + "/terrain_y_force.gpl";
+	postprocess::ChGnuPlot mplot1(plot1.c_str());
+	//std::string plot1_png = out_dir + "/terrain_y_force.png";
+	//mplot1.OutputPNG(plot1_png.c_str());
+	mplot1.SetGrid();
+	mplot1.SetLabelX("Time (sec)");
+	mplot1.SetLabelY("Force (N)");
+	mplot1.Plot("output.dat", 1, 3, "Terrain Y Force");
+	
+	std::string plot2 = out_dir + "/terrain_z_force.gpl";
+	postprocess::ChGnuPlot mplot2(plot2.c_str());
+	mplot2.SetGrid();
+	mplot2.SetLabelX("Time (sec)");
+	mplot2.SetLabelY("Force (N)");
+	mplot2.Plot("output.dat", 1, 4, "Terrain Z Force");
+
+	std::string plot3 = out_dir + "/motor_torque.gpl";
+	postprocess::ChGnuPlot mplot3(plot3.c_str());
+	mplot3.SetGrid();
+	mplot3.SetLabelX("Time (sec)");
+	mplot3.SetLabelY("Torque (N-m)");
+	mplot3.Plot("output.dat", 1, 11, "Motor Torque");
 	
 
 	return 0;
