@@ -189,8 +189,9 @@ int main(int argc, char* argv[]) {
 
 		vehicle::TerrainForce frc = mterrain.GetContactForce(rigidTire);
 		double torq = myMotor->GetMotorTorque();
-
-		outFile << time << frc.force << frc.moment << frc.point << torq << std::endl;
+		ChVector<> reacFrc = myMotor->Get_react_force();
+		
+		outFile << time << frc.force << frc.moment << frc.point << torq << reacFrc << std::endl;
 	
 
 		application.BeginScene();
