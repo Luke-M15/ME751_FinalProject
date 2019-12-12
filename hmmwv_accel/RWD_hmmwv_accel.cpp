@@ -63,7 +63,7 @@ TerrainType terrain_type = DEFORMABLE_SOIL;
 PowertrainModelType powertrain_model = PowertrainModelType::SIMPLE;
 
 // Drive type (FWD, RWD, or AWD)
-DrivelineType drive_type = DrivelineType::AWD;
+DrivelineType drive_type = DrivelineType::RWD;
 
 // Chassis visualization (MESH, PRIMITIVES, NONE)
 VisualizationType chassis_vis = VisualizationType::NONE;
@@ -94,7 +94,7 @@ double render_step_size = 1.0 / 100;
 ChVector<> trackPoint(0.0, 0.0, 1.75);
 
 // Output directories
-const std::string out_dir = "HMMWV_AWD_straight_accel";
+const std::string out_dir = "HMMWV_RWD_straight_accel";
 const std::string img_dir = out_dir + "/IMG";
 
 // Visualization output
@@ -258,7 +258,7 @@ int main(int argc, char* argv[]) {
 	// ---------------------------------------
 	// Create the vehicle Irrlicht application
 	// ---------------------------------------
-	ChWheeledVehicleIrrApp app(&my_hmmwv.GetVehicle(), &my_hmmwv.GetPowertrain(), L"HMMWV AWD Deformable Soil Straight Accel");
+	ChWheeledVehicleIrrApp app(&my_hmmwv.GetVehicle(), &my_hmmwv.GetPowertrain(), L"HMMWV RWD Deformable Soil Straight Accel");
 	app.SetSkyBox();
 	app.AddTypicalLights(irr::core::vector3df(30.f, -30.f, 100.f), irr::core::vector3df(30.f, 50.f, 100.f), 250, 130);
 	app.SetChaseCamera(trackPoint, 6.0, 0.5);
