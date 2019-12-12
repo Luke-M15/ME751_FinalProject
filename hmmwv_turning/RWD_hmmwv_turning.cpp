@@ -82,7 +82,7 @@ float mu_t = 0.8f;
 // -----------------------------------------------------------------------------
 
 // Simulation Length
-double t_end = 8.5;
+double t_end = 5;
 
 // Simulation step size
 double step_size = 3e-3;
@@ -94,7 +94,7 @@ double render_step_size = 1.0 / 100;
 ChVector<> trackPoint(0.0, 0.0, 1.75);
 
 // Output directories
-const std::string out_dir = "HMMWV_RWD";
+const std::string out_dir = "HMMWV_RWD_turning";
 const std::string img_dir = out_dir + "/IMG";
 
 // Visualization output
@@ -119,9 +119,9 @@ public:
 			return;
 
 		if (eff_time > 0.2)
-			m_throttle = 0.7;
+			m_throttle = 0.9;
 		else
-			m_throttle = 3.5 * eff_time;
+			m_throttle = 1.5 * eff_time;
 
 		if (eff_time < 1)
 			m_steering = 0;
@@ -263,7 +263,7 @@ int main(int argc, char* argv[]) {
 	// ---------------------------------------
 	// Create the vehicle Irrlicht application
 	// ---------------------------------------
-	ChWheeledVehicleIrrApp app(&my_hmmwv.GetVehicle(), &my_hmmwv.GetPowertrain(), L"HMMWV Deformable Soil Demo");
+	ChWheeledVehicleIrrApp app(&my_hmmwv.GetVehicle(), &my_hmmwv.GetPowertrain(), L"HMMWV RWD Deformable Soil Turning");
 	app.SetSkyBox();
 	app.AddTypicalLights(irr::core::vector3df(30.f, -30.f, 100.f), irr::core::vector3df(30.f, 50.f, 100.f), 250, 130);
 	app.SetChaseCamera(trackPoint, 6.0, 0.5);
@@ -322,8 +322,10 @@ int main(int argc, char* argv[]) {
 		auto frcR = static_cast<ChRigidTire*>(my_hmmwv.GetTire(1))->ReportTireForce(terrain);
 		double longSR = my_hmmwv.GetTire(1)->GetLongitudinalSlip();
 		double slipR = my_hmmwv.GetTire(1)->GetSlipAngle();
-		outFile << time << frcL.force.x() << frcL.force.y() << frcL.force.z() << longSL << slipL;
-		outFile << frcR.force.x() << frcR.force.y() << frcR.force.z() << longSR << slipR << std::endl;
+		auto drawL = my_hmmwv.GetVehicle().GetSuspension(0)->GetRevolute(LEFT)->Get_react_force();
+		auto drawR = my_hmmwv.GetVehicle().GetSuspension(0)->GetRevolute(RIGHT)->Get_react_force();
+		outFile << time << frcL.force.x() << frcL.force.y() << frcL.force.z() << longSL << slipL << drawL;
+		outFile << frcR.force.x() << frcR.force.y() << frcR.force.z() << longSR << slipR << drawR << std::endl;
 
 		// Render scene
 		app.BeginScene(true, true, irr::video::SColor(255, 140, 161, 192));
@@ -378,14 +380,14 @@ int main(int argc, char* argv[]) {
 	mplot3.SetGrid();
 	mplot3.SetLabelX("Time (sec)");
 	mplot3.SetLabelY("Force (N)");
-	mplot3.Plot("output.dat", 1, 8, "Right Tire Y Force");
+	mplot3.Plot("output.dat", 1, 9, "Right Tire Y Force");
 
 	std::string plot4 = out_dir + "/right_tire_z_force.gpl";
 	postprocess::ChGnuPlot mplot4(plot4.c_str());
 	mplot4.SetGrid();
 	mplot4.SetLabelX("Time (sec)");
 	mplot4.SetLabelY("Force (N)");
-	mplot4.Plot("output.dat", 1, 9, "Right Tire Z Force");
+	mplot4.Plot("output.dat", 1, 10, "Right Tire Z Force");
 
 	std::string plot5 = out_dir + "/left_tire_long_slip.gpl";
 	postprocess::ChGnuPlot mplot5(plot5.c_str());
@@ -399,7 +401,7 @@ int main(int argc, char* argv[]) {
 	mplot6.SetGrid();
 	mplot6.SetLabelX("Time (sec)");
 	mplot6.SetLabelY("Longitudinal Slip");
-	mplot6.Plot("output.dat", 1, 10, "Right Tire Longitudinal Slip");
+	mplot6.Plot("output.dat", 1, 11, "Right Tire Longitudinal Slip");
 
 	std::string plot7 = out_dir + "/left_tire_slip_angle.gpl";
 	postprocess::ChGnuPlot mplot7(plot7.c_str());
@@ -413,7 +415,21 @@ int main(int argc, char* argv[]) {
 	mplot8.SetGrid();
 	mplot8.SetLabelX("Time (sec)");
 	mplot8.SetLabelY("Slip Angle (deg)");
-	mplot8.Plot("output.dat", 1, 11, "Right Tire Slip Angle");
+	mplot8.Plot("output.dat", 1, 12, "Right Tire Slip Angle");
+
+	std::string plot9 = out_dir + "/front_left_drawbar.gpl";
+	postprocess::ChGnuPlot mplot9(plot9.c_str());
+	mplot9.SetGrid();
+	mplot9.SetLabelX("Longitudinal Slip");
+	mplot9.SetLabelY("Force (N)");
+	mplot9.Plot("output.dat", 5, 7, "Front Left Draw Pull");
+
+	std::string plot10 = out_dir + "/front_right_drawbar.gpl";
+	postprocess::ChGnuPlot mplot10(plot10.c_str());
+	mplot10.SetGrid();
+	mplot10.SetLabelX("Longitudinal Slip");
+	mplot10.SetLabelY("Force (N)");
+	mplot10.Plot("output.dat", 11, 13, "Front Right Drawbar Pull");
 
 	// Cleanup
 	delete terrain;

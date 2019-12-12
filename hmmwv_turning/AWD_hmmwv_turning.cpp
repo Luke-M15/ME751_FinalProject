@@ -82,7 +82,7 @@ float mu_t = 0.8f;
 // -----------------------------------------------------------------------------
 
 // Simulation Length
-double t_end = 2;
+double t_end = 5;
 
 // Simulation step size
 double step_size = 3e-3;
@@ -94,7 +94,7 @@ double render_step_size = 1.0 / 100;
 ChVector<> trackPoint(0.0, 0.0, 1.75);
 
 // Output directories
-const std::string out_dir = "HMMWV_AWD";
+const std::string out_dir = "HMMWV_AWD_turning";
 const std::string img_dir = out_dir + "/IMG";
 
 // Visualization output
@@ -119,9 +119,9 @@ public:
 			return;
 
 		if (eff_time > 0.2)
-			m_throttle = 0.7;
+			m_throttle = 0.9;
 		else
-			m_throttle = 3.5 * eff_time;
+			m_throttle = 1.5 * eff_time;
 
 		if (eff_time < 1)
 			m_steering = 0;
@@ -263,7 +263,7 @@ int main(int argc, char* argv[]) {
 	// ---------------------------------------
 	// Create the vehicle Irrlicht application
 	// ---------------------------------------
-	ChWheeledVehicleIrrApp app(&my_hmmwv.GetVehicle(), &my_hmmwv.GetPowertrain(), L"HMMWV Deformable Soil Demo");
+	ChWheeledVehicleIrrApp app(&my_hmmwv.GetVehicle(), &my_hmmwv.GetPowertrain(), L"HMMWV AWD Deformable Soil Turning");
 	app.SetSkyBox();
 	app.AddTypicalLights(irr::core::vector3df(30.f, -30.f, 100.f), irr::core::vector3df(30.f, 50.f, 100.f), 250, 130);
 	app.SetChaseCamera(trackPoint, 6.0, 0.5);
@@ -424,19 +424,19 @@ int main(int argc, char* argv[]) {
 	mplot8.SetLabelY("Slip Angle (deg)");
 	mplot8.Plot("output.dat", 1, 12, "Right Tire Slip Angle");
 
-	std::string plot9 = out_dir + "/left_drawbar.gpl";
+	std::string plot9 = out_dir + "/front_left_drawbar.gpl";
 	postprocess::ChGnuPlot mplot9(plot9.c_str());
 	mplot9.SetGrid();
 	mplot9.SetLabelX("Longitudinal Slip");
 	mplot9.SetLabelY("Force (N)");
-	mplot9.Plot("output.dat", 5, 7, "Left Draw Pull");
+	mplot9.Plot("output.dat", 5, 7, "Front Left Draw Pull");
 
-	std::string plot10 = out_dir + "/right_drawbar.gpl";
+	std::string plot10 = out_dir + "/front_right_drawbar.gpl";
 	postprocess::ChGnuPlot mplot10(plot10.c_str());
 	mplot10.SetGrid();
 	mplot10.SetLabelX("Longitudinal Slip");
 	mplot10.SetLabelY("Force (N)");
-	mplot10.Plot("output.dat", 11, 13, "Right Drawbar Pull");
+	mplot10.Plot("output.dat", 11, 13, "Front Right Drawbar Pull");
 
 	// Cleanup
 	delete terrain;
