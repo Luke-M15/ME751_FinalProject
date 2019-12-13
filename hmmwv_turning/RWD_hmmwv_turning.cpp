@@ -317,13 +317,13 @@ int main(int argc, char* argv[]) {
 		if (time >= t_end)
 			break;
 		auto frcL = static_cast<ChRigidTire*>(my_hmmwv.GetTire(0))->ReportTireForce(terrain);
-		double longSL = my_hmmwv.GetTire(0)->GetLongitudinalSlip();
+		double longSL = my_hmmwv.GetTire(2)->GetLongitudinalSlip();
 		double slipL = my_hmmwv.GetTire(0)->GetSlipAngle();
 		auto frcR = static_cast<ChRigidTire*>(my_hmmwv.GetTire(1))->ReportTireForce(terrain);
-		double longSR = my_hmmwv.GetTire(1)->GetLongitudinalSlip();
+		double longSR = my_hmmwv.GetTire(3)->GetLongitudinalSlip();
 		double slipR = my_hmmwv.GetTire(1)->GetSlipAngle();
-		auto drawL = my_hmmwv.GetVehicle().GetSuspension(0)->GetRevolute(LEFT)->Get_react_force();
-		auto drawR = my_hmmwv.GetVehicle().GetSuspension(0)->GetRevolute(RIGHT)->Get_react_force();
+		auto drawL = my_hmmwv.GetVehicle().GetSuspension(1)->GetRevolute(LEFT)->Get_react_force();
+		auto drawR = my_hmmwv.GetVehicle().GetSuspension(1)->GetRevolute(RIGHT)->Get_react_force();
 		outFile << time << frcL.force.x() << frcL.force.y() << frcL.force.z() << longSL << slipL << drawL;
 		outFile << frcR.force.x() << frcR.force.y() << frcR.force.z() << longSR << slipR << drawR << std::endl;
 
@@ -380,14 +380,14 @@ int main(int argc, char* argv[]) {
 	mplot3.SetGrid();
 	mplot3.SetLabelX("Time (sec)");
 	mplot3.SetLabelY("Force (N)");
-	mplot3.Plot("output.dat", 1, 9, "Right Tire Y Force");
+	mplot3.Plot("output.dat", 1, 11, "Right Tire Y Force");
 
 	std::string plot4 = out_dir + "/right_tire_z_force.gpl";
 	postprocess::ChGnuPlot mplot4(plot4.c_str());
 	mplot4.SetGrid();
 	mplot4.SetLabelX("Time (sec)");
 	mplot4.SetLabelY("Force (N)");
-	mplot4.Plot("output.dat", 1, 10, "Right Tire Z Force");
+	mplot4.Plot("output.dat", 1, 12, "Right Tire Z Force");
 
 	std::string plot5 = out_dir + "/left_tire_long_slip.gpl";
 	postprocess::ChGnuPlot mplot5(plot5.c_str());
@@ -401,7 +401,7 @@ int main(int argc, char* argv[]) {
 	mplot6.SetGrid();
 	mplot6.SetLabelX("Time (sec)");
 	mplot6.SetLabelY("Longitudinal Slip");
-	mplot6.Plot("output.dat", 1, 11, "Right Tire Longitudinal Slip");
+	mplot6.Plot("output.dat", 1, 13, "Right Tire Longitudinal Slip");
 
 	std::string plot7 = out_dir + "/left_tire_slip_angle.gpl";
 	postprocess::ChGnuPlot mplot7(plot7.c_str());
@@ -415,21 +415,21 @@ int main(int argc, char* argv[]) {
 	mplot8.SetGrid();
 	mplot8.SetLabelX("Time (sec)");
 	mplot8.SetLabelY("Slip Angle (deg)");
-	mplot8.Plot("output.dat", 1, 12, "Right Tire Slip Angle");
+	mplot8.Plot("output.dat", 1, 114, "Right Tire Slip Angle");
 
 	std::string plot9 = out_dir + "/front_left_drawbar.gpl";
 	postprocess::ChGnuPlot mplot9(plot9.c_str());
 	mplot9.SetGrid();
 	mplot9.SetLabelX("Longitudinal Slip");
 	mplot9.SetLabelY("Force (N)");
-	mplot9.Plot("output.dat", 5, 7, "Front Left Draw Pull");
+	mplot9.Plot("output.dat", 5, 7, "Rear Left Draw Pull");
 
 	std::string plot10 = out_dir + "/front_right_drawbar.gpl";
 	postprocess::ChGnuPlot mplot10(plot10.c_str());
 	mplot10.SetGrid();
 	mplot10.SetLabelX("Longitudinal Slip");
 	mplot10.SetLabelY("Force (N)");
-	mplot10.Plot("output.dat", 11, 13, "Front Right Drawbar Pull");
+	mplot10.Plot("output.dat", 13, 15, "Rear Right Drawbar Pull");
 
 	// Cleanup
 	delete terrain;

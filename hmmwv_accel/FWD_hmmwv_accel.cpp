@@ -382,14 +382,14 @@ int main(int argc, char* argv[]) {
 	mplot3.SetGrid();
 	mplot3.SetLabelX("Time (sec)");
 	mplot3.SetLabelY("Force (N)");
-	mplot3.Plot("output.dat", 1, 9, "Right Tire Y Force");
+	mplot3.Plot("output.dat", 1, 11, "Right Tire Y Force");
 
 	std::string plot4 = out_dir + "/right_tire_z_force.gpl";
 	postprocess::ChGnuPlot mplot4(plot4.c_str());
 	mplot4.SetGrid();
 	mplot4.SetLabelX("Time (sec)");
 	mplot4.SetLabelY("Force (N)");
-	mplot4.Plot("output.dat", 1, 10, "Right Tire Z Force");
+	mplot4.Plot("output.dat", 1, 12, "Right Tire Z Force");
 
 	std::string plot5 = out_dir + "/left_tire_long_slip.gpl";
 	postprocess::ChGnuPlot mplot5(plot5.c_str());
@@ -403,7 +403,7 @@ int main(int argc, char* argv[]) {
 	mplot6.SetGrid();
 	mplot6.SetLabelX("Time (sec)");
 	mplot6.SetLabelY("Longitudinal Slip");
-	mplot6.Plot("output.dat", 1, 11, "Right Tire Longitudinal Slip");
+	mplot6.Plot("output.dat", 1, 13, "Right Tire Longitudinal Slip");
 
 	std::string plot7 = out_dir + "/left_tire_slip_angle.gpl";
 	postprocess::ChGnuPlot mplot7(plot7.c_str());
@@ -417,7 +417,7 @@ int main(int argc, char* argv[]) {
 	mplot8.SetGrid();
 	mplot8.SetLabelX("Time (sec)");
 	mplot8.SetLabelY("Slip Angle (deg)");
-	mplot8.Plot("output.dat", 1, 12, "Right Tire Slip Angle");
+	mplot8.Plot("output.dat", 1, 114, "Right Tire Slip Angle");
 
 	std::string plot9 = out_dir + "/front_left_drawbar.gpl";
 	postprocess::ChGnuPlot mplot9(plot9.c_str());
@@ -431,7 +431,7 @@ int main(int argc, char* argv[]) {
 	mplot10.SetGrid();
 	mplot10.SetLabelX("Longitudinal Slip");
 	mplot10.SetLabelY("Force (N)");
-	mplot10.Plot("output.dat", 11, 13, "Front Right Drawbar Pull");
+	mplot10.Plot("output.dat", 13, 15, "Front Right Drawbar Pull");
 
 	// Cleanup
 	delete terrain;
