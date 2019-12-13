@@ -324,9 +324,10 @@ int main(int argc, char* argv[]) {
 		double slipR = my_hmmwv.GetTire(1)->GetSlipAngle();
 		auto drawL = my_hmmwv.GetVehicle().GetSuspension(0)->GetRevolute(LEFT)->Get_react_force();
 		auto drawR = my_hmmwv.GetVehicle().GetSuspension(0)->GetRevolute(RIGHT)->Get_react_force();
-		outFile << time << frcL.force.x() << frcL.force.y() << frcL.force.z() << longSL << slipL << drawL;
-		outFile << frcR.force.x() << frcR.force.y() << frcR.force.z() << longSR << slipR << drawR << std::endl;
-
+		if (time > .75) {
+			outFile << time << frcL.force.x() << frcL.force.y() << frcL.force.z() << longSL << slipL << drawL;
+			outFile << frcR.force.x() << frcR.force.y() << frcR.force.z() << longSR << slipR << drawR << std::endl;
+		}
 		// Render scene
 		app.BeginScene(true, true, irr::video::SColor(255, 140, 161, 192));
 		app.DrawAll();

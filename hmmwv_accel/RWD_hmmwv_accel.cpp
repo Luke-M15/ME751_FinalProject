@@ -326,9 +326,10 @@ int main(int argc, char* argv[]) {
 		double slipR = my_hmmwv.GetTire(1)->GetSlipAngle();
 		auto drawL = my_hmmwv.GetVehicle().GetSuspension(1)->GetRevolute(LEFT)->Get_react_force();
 		auto drawR = my_hmmwv.GetVehicle().GetSuspension(1)->GetRevolute(RIGHT)->Get_react_force();
-		outFile << time << frcL.force.x() << frcL.force.y() << frcL.force.z() << longSL << slipL << drawL;
-		outFile << frcR.force.x() << frcR.force.y() << frcR.force.z() << longSR << slipR << drawR << std::endl;
-
+		if (time > .75) {
+			outFile << time << frcL.force.x() << frcL.force.y() << frcL.force.z() << longSL << slipL << drawL;
+			outFile << frcR.force.x() << frcR.force.y() << frcR.force.z() << longSR << slipR << drawR << std::endl;
+		}
 		// Render scene
 		app.BeginScene(true, true, irr::video::SColor(255, 140, 161, 192));
 		app.DrawAll();
@@ -419,14 +420,14 @@ int main(int argc, char* argv[]) {
 	mplot8.SetLabelY("Slip Angle (deg)");
 	mplot8.Plot("output.dat", 1, 114, "Right Tire Slip Angle");
 
-	std::string plot9 = out_dir + "/front_left_drawbar.gpl";
+	std::string plot9 = out_dir + "/rear_left_drawbar.gpl";
 	postprocess::ChGnuPlot mplot9(plot9.c_str());
 	mplot9.SetGrid();
 	mplot9.SetLabelX("Longitudinal Slip");
 	mplot9.SetLabelY("Force (N)");
 	mplot9.Plot("output.dat", 5, 7, "Rear Left Draw Pull");
 
-	std::string plot10 = out_dir + "/front_right_drawbar.gpl";
+	std::string plot10 = out_dir + "/rear_right_drawbar.gpl";
 	postprocess::ChGnuPlot mplot10(plot10.c_str());
 	mplot10.SetGrid();
 	mplot10.SetLabelX("Longitudinal Slip");
